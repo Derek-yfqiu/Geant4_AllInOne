@@ -22,7 +22,8 @@ the migration work is not yet completed. Using other version will sure fail for 
 1. download the repo, and extract the folder *geant4.10.01.b01-halfspace_umesh_meshfitvoxel*
 2. download the original Geant4.10.01.b01: *wget http://geant4.cern.ch/support/source/geant4.10.01.b01.tar.gz*
 3. extract the original Geant4 package, and then merge the development with the original package
-   *cp -TRv ./geant4.10.01.b01-halfspace_umesh_meshfitvoxel ./geant4.10.01.b01*
+  
+  *cp -TRv ./geant4.10.01.b01-halfspace_umesh_meshfitvoxel ./geant4.10.01.b01*
 4. compile Geant4 by following the offical guide. 
 
 
