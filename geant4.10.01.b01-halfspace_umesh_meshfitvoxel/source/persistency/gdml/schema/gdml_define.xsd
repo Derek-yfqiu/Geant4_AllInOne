@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" version="1.0" xmlns:gdml="http://cern.ch/2001/Schemas/GDML" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="gdml_core.xsd"/>
+  <xs:include schemaLocation="gdml_extensions.xsd"/>
+
+  <!--QIU ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!--QIU: Type for the nodes in Visualization -->
+  <xs:complexType name="NodesType" >
+    <xs:sequence >
+      <xs:element name="Node"  type="ThreeVectorType" minOccurs="3" maxOccurs="unbounded"  />
+    </xs:sequence>
+    <xs:attribute name="lunit" type="xs:string" default="mm"/>
+  </xs:complexType>
+
+  <!--Type define for the Facets in Visualization-->
+  <xs:complexType name="FacetsType" >
+    <xs:sequence >
+      <xs:element name="Facet" minOccurs="1" maxOccurs="unbounded" >
+        <xs:complexType>
+          <!--We assume that the nodes given in the Nodes are in a certain sequence, 
+          and then the facets are referring to this sequence.-->
+          <xs:attribute name="n1" type="xs:integer" use="required" />
+          <xs:attribute name="n2" type="xs:integer" use="required" />
+          <xs:attribute name="n3" type="xs:integer" use="required" />
+          <xs:attribute name="n4" type="xs:integer" default="0"/>
+          <!--used for quadrangle facets-->
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!--define type for Color -->
+  <xs:complexType name="ColorType" >
+          <xs:attribute name="r" type="xs:integer" use="required" />
+          <xs:attribute name="g" type="xs:integer" use="required" />
+          <xs:attribute name="b" type="xs:integer" use="required" />
+  </xs:complexType>
+
+  <!--Type define for a polyhedron-->
+  <xs:complexType name="PolyhedronType" >
+    <xs:sequence>
+      <xs:element name="Nodes" type="NodesType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Facets" type="FacetsType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Color" type="ColorType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:ID" use="required" />
+  </xs:complexType>
+  
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  
+  <xs:element name="define" type="defineType">
+    <xs:annotation>
+      <xs:documentation>Definition block of global named constants, quantitties, expressions,
+        positions and rotations which may be used by name or
+        by a reference in scope of the current document</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <xs:complexType name="defineType">
+    <xs:annotation>
+      <xs:documentation>The global complex type is defined in order to reuse this defintion
+        in derived schemas</xs:documentation>
+    </xs:annotation>
+    <!-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+    
+    <xs:choice maxOccurs="unbounded">
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      <xs:element maxOccurs="unbounded" minOccurs="0" ref="loop"/>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="constant" type="IdentifiableConstantType">
+	<xs:annotation>
+	  <xs:documentation>Named constant</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="variable" type="IdentifiableVariableType">
+	<xs:annotation>
+	  <xs:documentation>Named variable</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="matrix" type="MatrixType">
+	<xs:annotation>
+	  <xs:documentation>Named matrix</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="quantity" type="IdentifiableQuantityType">
+	<xs:annotation>
+	  <xs:documentation>Named quantity</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="expression" type="IdentifiableExpressionType">
+	<xs:annotation>
+	  <xs:documentation>Named expression, may contain other named constants,
+            quantities and expressions</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="position" type="positionType">
+	<xs:annotation>
+	  <xs:documentation>Named cartesian position, default unit mm</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+          
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="rotation" type="rotationType">
+	<xs:annotation>
+	  <xs:documentation>Named cartesian rotation, default unit radian</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="scale" type="scaleType">
+	<xs:annotation>
+	  <xs:documentation>Named cartesian rotation, default unit radian</xs:documentation>
+	</xs:annotation>
+      </xs:element>
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      <!--QIU: Type for the nodes in Visualization -->
+      <xs:element name="Polyhedron" type="PolyhedronType" minOccurs="0" maxOccurs="unbounded" />
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    </xs:choice>
+    <!-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+  </xs:complexType>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  
+  <xs:complexType name="positionType">
+    <xs:complexContent>
+      <xs:restriction base="IdentifiableQuantityVectorType">
+	<xs:attribute default="mm" type="xs:string" name="unit"/>
+	<xs:attribute default="cartesian" type="xs:string" name="type"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  
+  <xs:complexType name="rotationType">
+    <xs:complexContent>
+      <xs:restriction base="IdentifiableQuantityVectorType">
+	<xs:attribute default="radian" type="xs:string" name="unit"/>
+	<xs:attribute default="cartesian" type="xs:string" name="type"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <xs:complexType name="scaleType">
+    <xs:complexContent>
+      <xs:restriction base="IdentifiableQuantityVectorType">
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+</xs:schema>
