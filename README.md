@@ -24,6 +24,7 @@ the migration work is not yet completed. Using other version will sure fail for 
 3. extract the original Geant4 package, and then merge the development with the original package
   
   *cp -TRv ./geant4.10.01.b01-halfspace_umesh_meshfitvoxel ./geant4.10.01.b01*
+  
 4. compile Geant4 by following the offical guide. 
 
 
